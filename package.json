@@ -1,0 +1,51 @@
+{
+  "name": "risk-assesment",
+  "version": "2023.5.1",
+  "description": "API to determine risk for insurance policy decisions",
+  "private": true,
+  "author": "Kevin Kolz <kckolz@gmail.com>",
+  "scripts": {
+    "start": "npm run build && npm run serve",
+    "compile": "npx tsc",
+    "test": "npm run build && NODE_ENV=test node --max-old-space-size=8192 node_modules/.bin/jest --notify --config=jest.config.js --runInBand --forceExit --verbose --detectOpenHandles",
+    "test-debug": "npm run build && NODE_ENV=test node -r dotenv/config --inspect=9222 node_modules/.bin/jest --runInBand --verbose --config=jest.config.js --forceExit",
+    "build": "npm run compile",
+    "serve": "NODE_ENV=development npx tsc-watch --outDir ./dist --onSuccess \"node  --max-http-header-size 25000 ./dist/app.js\"",
+    "linter": "eslint --fix -c .eslintrc.js '**/*.ts'",
+    "debug": "npm run build && npm run serve-debug",
+    "serve-debug": "tsc-watch --outDir ./dist --onSuccess \"node --inspect=9222 --trace-warnings ./dist/app.js\" ",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "axios": "0.27.2",
+    "express": "4.18.1",
+    "helmet": "5.1.0",
+    "lodash": "4.17.21",
+    "morgan": "1.10.0",
+    "reflect-metadata": "0.1.13",
+    "tsyringe": "4.6.0"
+  },
+  "devDependencies": {
+    "@types/errorhandler": "0.0.30",
+    "@types/express": "4.17.7",
+    "@types/jest": "24.0.11",
+    "@types/node": "18.11.9",
+    "@types/supertest": "2.0.12",
+    "@typescript-eslint/eslint-plugin": "^3.10.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^3.10.0",
+    "@typescript-eslint/parser": "^3.10.0",
+    "eslint": "7.7.0",
+    "eslint-config-prettier": "6.11.0",
+    "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-jsdoc": "30.2.4",
+    "eslint-plugin-prefer-arrow": "1.2.2",
+    "jest": "29.4.3",
+    "jest-html-reporter": "3.7.0",
+    "node-notifier": "^10.0.1",
+    "prettier": "2.1.0",
+    "supertest": "6.3.3",
+    "ts-node": "10.9.1",
+    "tsc-watch": "6.0.0",
+    "typescript": "4.4.4"
+  }
+}
