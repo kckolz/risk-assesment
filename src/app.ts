@@ -15,6 +15,6 @@ Server.initializeApp()
   .catch((error) => {
     console.error(
       { err: error },
-      "Error starting the Whetstone API. " + error.message
+      "Error starting the Risk Assessment API. " + error.message
     );
   });
