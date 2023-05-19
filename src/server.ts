@@ -3,7 +3,6 @@ import * as http from "http";
 import * as morgan from "morgan";
 import helmet from "helmet";
 import { Router } from "./routes/router";
-import { InternalServerError } from "./errors/InternalServerError";
 
 /**
  * The main application that handles setting up and initializing the express server application.
@@ -22,14 +21,11 @@ export class Server {
       // Create the instance of the express application.
       Server.app = express();
 
-      // HELMET dependency to add recommended security things. You can look at everything it does by default
-      // by checking the link(s) below.
-      // https://expressjs.com/en/advanced/best-practice-security.html#use-helmet
-      // https://www.npmjs.com/package/helmet
+      // Helmet adds recommended security configuration
       Server.app.use(helmet());
 
-      // Initialize the logger that our application will use.
-      Server.initializeLogging();
+      // Handle exceptions that slip through the cracks
+      Server.logUnhandledException();
 
       // Configure application
       Server.configureApp();
@@ -40,7 +36,8 @@ export class Server {
       // Start server
       return Server.app.listen(Server.app.get("port"));
     } catch (error) {
-      throw new InternalServerError(error.message);
+      console.error(`Error initializing application: ${error.message}`);
+      throw new Error(error.message);
     }
   }
 
@@ -48,10 +45,9 @@ export class Server {
    * Configures and binds routes that the API will use.
    */
   private static async initializeRoutes() {
-    const v1Router = express.Router();
-    await Router.initializeRoutes(v1Router);
-    Server.app.use("/v1", v1Router);
-    Server.app.use("/", v1Router); // Set the default version to latest.
+    const mainRouter = express.Router();
+    await Router.initializeRoutes(mainRouter);
+    Server.app.use("/", mainRouter);
   }
 
   /**
@@ -67,15 +63,15 @@ export class Server {
         skip(req, res) {
           return res.statusCode >= 400;
         },
-        stream: process.stdout
+        stream: process.stdout,
       })
     );
   }
 
   /**
-   * Sets up the logging and error handling that the application will use.
+   * Catches any unhandled exceptions and logs them to the console.
    */
-  private static initializeLogging() {
+  private static logUnhandledException() {
     // We don't want to ever hit these uncaught exceptions but these are here jic
     process.on("unhandledRejection", (reason, p) => {
       console.error("reason: ", reason);

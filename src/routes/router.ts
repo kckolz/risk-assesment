@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import {
   Request,
   Response,
@@ -8,16 +9,16 @@ import { PolicyRouter } from "./PolicyRouter";
 
 export class Router {
   public static async initializeRoutes(router: ExpressRouter) {
-    // Setup health route before adding middleware
+    // Setup health route
     Router.setupHealthRoute(router);
 
-    // Setup auth route before adding middleware
+    // Setup policies route
     router.use("/policies", container.resolve(PolicyRouter).router);
   }
 
 
   /**
-   * Route used by Kubernetes to check if the API is running and responding to requests
+   * Route used to check if the API is running and responding to requests
    *
    * @param router The router on which the health route will be appended
    */

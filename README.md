@@ -1,9 +1,6 @@
-# Insurance Policy API
+# Risk Assessment API
 
-The Whetstone API is the main entry-point for our mobile and web applications retrieval of data. 
-It is built with various technologies that are outlined below with links to their documentation and/or 
-websites for your reference.
-
+The risk assessment API is used to determine a user's risk profile for each line of insurance  (life, disability, home & auto) and then suggest an insurance plan ("economic", "regular", "responsible") corresponding to their risk profile.
 ### Running the tests
 
     npm run test

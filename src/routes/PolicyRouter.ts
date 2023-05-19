@@ -2,6 +2,7 @@ import { injectable } from "tsyringe";
 import { BaseRouter } from "./BaseRouter";
 import { PolicyManager } from "../managers/PolicyManager";
 import { PolicyRequest } from "../models/interfaces/policy-request.interface";
+import { PolicyResponse } from "../models/interfaces/policy-response.interface";
 
 /**
  * Handles all routes concerning policies.
@@ -11,25 +12,26 @@ export class PolicyRouter extends BaseRouter {
   /**
    * Default constructor
    */
-  constructor(
-    private riskManager: PolicyManager
-  ) {
+  constructor(private policyManager: PolicyManager) {
     super();
     this.buildRoutes();
   }
 
   /**
-   * Given a district basic info by ID.
+   * Given a policy request, calculate risks and return a policy
    */
-  public async getPolicy(
-    req,
-    res,
-    next
-  ) {
+  public async getPolicy(req, res, next) {
     try {
       const policyRequest = req.body as PolicyRequest;
-      const policyResponse = this.riskManager.getRiskProfile(policyRequest);
-      res.json(policyResponse);
+      if (this.policyManager.validatePolicyRequest(policyRequest)) {
+        const policyResponse: PolicyResponse = this.policyManager.getRiskProfile(
+          policyRequest
+        );
+        res.json(policyResponse);
+      } else {
+        console.error(`Invalid policy request`);
+        res.status(400).send("Invalid policy request");
+      }
     } catch (err) {
       console.error(`Error getting policy: ${err}`);
       next(err);

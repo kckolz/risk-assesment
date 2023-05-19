@@ -1,5 +1,6 @@
 import * as http from "http";
-import { Server } from "../../server"
+import { Server } from "../server"
+import "reflect-metadata";
 
 /**
  * Handles setting up and tearing down the Test Server Instance.

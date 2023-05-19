@@ -17,20 +17,6 @@ module.exports = {
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: ["json", "text", "lcov", "clover"],
 
-  // Use this configuration option to add custom reporters to Jest
-  reporters: [
-    "default",
-    // -- USE basic reporter
-    [
-      "./node_modules/jest-html-reporter",
-      {
-        pageTitle: "Whetstone API Tests Report",
-        statusIgnoreFilter: "passed", // Will not render passing tests on the report--will only show failed tests.
-        includeFailureMsg: true, // When a failed test is shown, it will also include the failure message in the report
-      },
-    ],
-  ],
-
   // The test environment that will be used for testing
   testEnvironment: "node",
 
